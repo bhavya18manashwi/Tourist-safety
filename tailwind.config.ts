@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -38,6 +39,7 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          light: "hsl(var(--accent-light))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -47,16 +49,26 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        bamboo: {
+          DEFAULT: "hsl(var(--bamboo))",
+          dark: "hsl(var(--bamboo-dark))",
+          foreground: "hsl(var(--bamboo-foreground))",
         },
+      },
+      backgroundImage: {
+        'gradient-forest': 'var(--gradient-forest)',
+        'gradient-mountain': 'var(--gradient-mountain)',
+        'gradient-sunrise': 'var(--gradient-sunrise)',
+        'gradient-cultural': 'var(--gradient-cultural)',
+      },
+      boxShadow: {
+        'cultural': 'var(--shadow-cultural)',
+        'elegant': 'var(--shadow-elegant)',
+        'warm': 'var(--shadow-warm)',
+      },
+      fontFamily: {
+        sans: ['Inter', 'Noto Sans Devanagari', 'sans-serif'],
+        cultural: ['Noto Sans Devanagari', 'Inter', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
