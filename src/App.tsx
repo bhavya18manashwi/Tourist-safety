@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import TouristDashboard from "./pages/TouristDashboard";
@@ -15,21 +17,51 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<TouristDashboard />} />
-          <Route path="/police" element={<PoliceDashboard />} />
-          <Route path="/transport" element={<TransportDashboard />} />
-          <Route path="/superadmin" element={<SuperAdminDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute allowedRoles={['tourist']}>
+                  <TouristDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/police" 
+              element={
+                <ProtectedRoute allowedRoles={['police']}>
+                  <PoliceDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/transport" 
+              element={
+                <ProtectedRoute allowedRoles={['transport']}>
+                  <TransportDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/superadmin" 
+              element={
+                <ProtectedRoute allowedRoles={['superadmin']}>
+                  <SuperAdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, Eye, EyeOff } from "lucide-react";
+import { Shield, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,34 +7,63 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-northeast.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [userType, setUserType] = useState("");
   const [blockchainId, setBlockchainId] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Simple demo routing based on user type
-    switch (userType) {
-      case "tourist":
-        navigate("/dashboard");
-        break;
-      case "police":
-        navigate("/police");
-        break;
-      case "transport":
-        navigate("/transport");
-        break;
-      case "superadmin":
-        navigate("/superadmin");
-        break;
-      default:
-        alert("Please select a user type");
+    setIsLoading(true);
+
+    try {
+      const success = login(blockchainId, password, userType);
+      
+      if (success) {
+        toast({
+          title: "Login Successful",
+          description: "Welcome to the NE Safety System",
+        });
+        
+        // Navigate based on user type
+        switch (userType) {
+          case "tourist":
+            navigate("/dashboard");
+            break;
+          case "police":
+            navigate("/police");
+            break;
+          case "transport":
+            navigate("/transport");
+            break;
+          case "superadmin":
+            navigate("/superadmin");
+            break;
+        }
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Invalid credentials. Please check your Blockchain ID and password.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Authentication Error",
+        description: "An error occurred during login. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -157,9 +186,9 @@ const Login = () => {
               <Button 
                 type="submit" 
                 className="w-full btn-cultural text-lg py-6"
-                disabled={!userType || !blockchainId || !password}
+                disabled={!userType || !blockchainId || !password || isLoading}
               >
-                Secure Login
+                {isLoading ? "Authenticating..." : "Secure Login"}
               </Button>
 
               {/* Demo Credentials */}

@@ -3,6 +3,7 @@ import { Shield, AlertTriangle, Map, Users, MessageCircle, Camera, Music, Palett
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import CulturalModal, { CULTURAL_DATA } from "@/components/CulturalModal";
 import heroImage from "@/assets/hero-northeast.jpg";
 import traditionalDance from "@/assets/traditional-dance.jpg";
 import northeastNature from "@/assets/northeast-nature.jpg";
@@ -10,6 +11,16 @@ import traditionalCrafts from "@/assets/traditional-crafts.jpg";
 
 const HomePage = () => {
   const [chatOpen, setChatOpen] = useState(false);
+  const [selectedCulturalItem, setSelectedCulturalItem] = useState<any>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openCulturalModal = (itemId: string) => {
+    const item = CULTURAL_DATA.find(item => item.id === itemId);
+    if (item) {
+      setSelectedCulturalItem(item);
+      setModalOpen(true);
+    }
+  };
 
   const coreFeatures = [
     {
@@ -170,48 +181,62 @@ const HomePage = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
             <div>
               <h3 className="text-3xl font-bold mb-6">Rich Cultural Heritage</h3>
-              <div className="grid sm:grid-cols-2 gap-6">
-                {culturalAddons.map((addon, index) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <div className="bg-accent/20 p-3 rounded-lg">
-                      <addon.icon className="h-6 w-6 text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-2">{addon.title}</h4>
-                      <p className="text-sm text-muted-foreground">{addon.description}</p>
-                    </div>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {culturalAddons.map((addon, index) => (
+                <div 
+                  key={index} 
+                  className="flex items-start space-x-4 cursor-pointer hover:bg-accent/5 p-2 rounded-lg transition-colors"
+                  onClick={() => {
+                    const itemIds = ['bihu-geet', 'kaziranga', 'red-panda', 'bamboo-crafts'];
+                    openCulturalModal(itemIds[index]);
+                  }}
+                >
+                  <div className="bg-accent/20 p-3 rounded-lg">
+                    <addon.icon className="h-6 w-6 text-accent" />
                   </div>
-                ))}
-              </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">{addon.title}</h4>
+                    <p className="text-sm text-muted-foreground">{addon.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <img 
-                src={traditionalDance} 
-                alt="Traditional Dance" 
-                className="rounded-xl shadow-elegant"
-              />
-              <img 
-                src={traditionalCrafts} 
-                alt="Traditional Crafts" 
-                className="rounded-xl shadow-elegant mt-8"
-              />
             </div>
+          <div className="grid grid-cols-2 gap-4">
+            <img 
+              src={traditionalDance} 
+              alt="Traditional Dance" 
+              className="rounded-xl shadow-elegant cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => openCulturalModal('manipuri-dance')}
+            />
+            <img 
+              src={traditionalCrafts} 
+              alt="Traditional Crafts" 
+              className="rounded-xl shadow-elegant mt-8 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => openCulturalModal('bamboo-crafts')}
+            />
+          </div>
           </div>
           
-          <div className="card-cultural rounded-2xl p-8 text-center">
-            <img 
-              src={northeastNature} 
-              alt="North East Nature" 
-              className="w-full h-48 object-cover rounded-xl mb-6"
-            />
-            <h3 className="text-2xl font-bold mb-4">Biodiversity & Natural Wonders</h3>
-            <p className="text-muted-foreground mb-6">
-              Explore the unique flora, fauna, and pristine landscapes of North East India while staying safe with our integrated monitoring system.
-            </p>
-            <Button variant="outline" className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              Discover Nature
-            </Button>
-          </div>
+        <div className="card-cultural rounded-2xl p-8 text-center">
+          <img 
+            src={northeastNature} 
+            alt="North East Nature" 
+            className="w-full h-48 object-cover rounded-xl mb-6 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => openCulturalModal('red-panda')}
+          />
+          <h3 className="text-2xl font-bold mb-4">Biodiversity & Natural Wonders</h3>
+          <p className="text-muted-foreground mb-6">
+            Explore the unique flora, fauna, and pristine landscapes of North East India while staying safe with our integrated monitoring system.
+          </p>
+          <Button 
+            variant="outline" 
+            className="bg-accent/10 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+            onClick={() => openCulturalModal('red-panda')}
+          >
+            Discover Nature
+          </Button>
+        </div>
         </div>
       </section>
 
@@ -280,6 +305,13 @@ const HomePage = () => {
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
+
+      {/* Cultural Modal */}
+      <CulturalModal 
+        item={selectedCulturalItem}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 };

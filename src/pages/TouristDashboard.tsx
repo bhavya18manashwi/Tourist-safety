@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, AlertTriangle, MapPin, Music, Users, Camera, Play, Volume2, Heart, Eye, EyeOff } from "lucide-react";
+import { Shield, AlertTriangle, MapPin, Music, Users, Camera, Play, Volume2, Heart, Eye, EyeOff, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,15 +7,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
+import { useAuth } from "@/contexts/AuthContext";
+import GeofencingMonitor from "@/components/GeofencingMonitor";
+import CulturalModal, { CULTURAL_DATA } from "@/components/CulturalModal";
 import traditionalDance from "@/assets/traditional-dance.jpg";
 import northeastNature from "@/assets/northeast-nature.jpg";
 import traditionalCrafts from "@/assets/traditional-crafts.jpg";
 
 const TouristDashboard = () => {
+  const { user, logout } = useAuth();
   const [showBlockchainId, setShowBlockchainId] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [sosActive, setSosActive] = useState(false);
   const [currentSong, setCurrentSong] = useState<number | null>(null);
+  const [selectedCulturalItem, setSelectedCulturalItem] = useState<any>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const folkSongs = [
     { name: "Bihu Geet", region: "Assam", description: "Traditional spring festival song" },
@@ -52,6 +58,18 @@ const TouristDashboard = () => {
     }
   };
 
+  const openCulturalModal = (itemId: string) => {
+    const item = CULTURAL_DATA.find(item => item.id === itemId);
+    if (item) {
+      setSelectedCulturalItem(item);
+      setModalOpen(true);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="min-h-screen bg-background pattern-tribal">
       {/* Header */}
@@ -68,8 +86,9 @@ const TouristDashboard = () => {
             <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
               Location: Guwahati, Assam
             </Badge>
-            <Button variant="outline" asChild>
-              <a href="/login">Logout</a>
+            <Button variant="outline" onClick={handleLogout}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Logout
             </Button>
           </div>
         </div>
@@ -106,22 +125,8 @@ const TouristDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Safety Status */}
-            <Card className="card-cultural border-0">
-              <CardHeader>
-                <CardTitle className="text-lg">Safety Status</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Area Safety Level</span>
-                  <Badge className="bg-primary/20 text-primary">Safe</Badge>
-                </div>
-                <Progress value={85} className="h-2" />
-                <div className="text-xs text-muted-foreground">
-                  Based on recent incident reports and police monitoring
-                </div>
-              </CardContent>
-            </Card>
+            {/* Geofencing Monitor */}
+            <GeofencingMonitor />
 
             {/* Blockchain ID */}
             <Card className="card-cultural border-0">
@@ -183,7 +188,11 @@ const TouristDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 {folkSongs.map((song, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-accent/5 rounded-lg">
+                  <div 
+                    key={index} 
+                    className="flex items-center justify-between p-3 bg-accent/5 rounded-lg cursor-pointer hover:bg-accent/10 transition-colors"
+                    onClick={() => openCulturalModal('bihu-geet')}
+                  >
                     <div className="flex-1">
                       <h4 className="font-medium">{song.name}</h4>
                       <p className="text-sm text-muted-foreground">{song.region} • {song.description}</p>
@@ -191,7 +200,10 @@ const TouristDashboard = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setCurrentSong(currentSong === index ? null : index)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentSong(currentSong === index ? null : index);
+                      }}
                     >
                       {currentSong === index ? <Volume2 className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                     </Button>
@@ -211,7 +223,11 @@ const TouristDashboard = () => {
               <CardContent>
                 <div className="grid grid-cols-2 gap-3">
                   {folkDances.map((dance, index) => (
-                    <div key={index} className="text-center p-3 bg-primary/5 rounded-lg">
+                    <div 
+                      key={index} 
+                      className="text-center p-3 bg-primary/5 rounded-lg cursor-pointer hover:bg-primary/10 transition-colors"
+                      onClick={() => openCulturalModal('manipuri-dance')}
+                    >
                       <h4 className="font-medium text-sm">{dance.name}</h4>
                       <p className="text-xs text-muted-foreground">{dance.region}</p>
                       <Badge variant="outline" className="mt-1 text-xs">{dance.performers}</Badge>
@@ -222,7 +238,8 @@ const TouristDashboard = () => {
                   <img 
                     src={traditionalDance} 
                     alt="Traditional Dance" 
-                    className="w-full h-32 object-cover rounded-lg shadow-cultural"
+                    className="w-full h-32 object-cover rounded-lg shadow-cultural cursor-pointer hover:opacity-80 transition-opacity"
+                    onClick={() => openCulturalModal('manipuri-dance')}
                   />
                 </div>
               </CardContent>
@@ -256,7 +273,8 @@ const TouristDashboard = () => {
                 <img 
                   src={traditionalCrafts} 
                   alt="Traditional Crafts" 
-                  className="w-full h-24 object-cover rounded-lg"
+                  className="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => openCulturalModal('bamboo-crafts')}
                 />
               </CardContent>
             </Card>
@@ -275,7 +293,11 @@ const TouristDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-3">
                 {nearbyAttractions.map((attraction, index) => (
-                  <div key={index} className="p-3 bg-card border border-border/50 rounded-lg">
+                  <div 
+                    key={index} 
+                    className="p-3 bg-card border border-border/50 rounded-lg cursor-pointer hover:bg-accent/5 transition-colors"
+                    onClick={() => openCulturalModal('kaziranga')}
+                  >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h4 className="font-medium">{attraction.name}</h4>
@@ -330,7 +352,8 @@ const TouristDashboard = () => {
                 <img 
                   src={northeastNature} 
                   alt="North East Nature" 
-                  className="w-full h-32 object-cover rounded-lg mb-3"
+                  className="w-full h-32 object-cover rounded-lg mb-3 cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => openCulturalModal('red-panda')}
                 />
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="text-center p-2 bg-primary/5 rounded">
@@ -350,6 +373,13 @@ const TouristDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Cultural Modal */}
+      <CulturalModal 
+        item={selectedCulturalItem}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </div>
   );
 };
