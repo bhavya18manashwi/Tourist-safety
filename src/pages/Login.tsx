@@ -213,16 +213,48 @@ const Login = () => {
 
               {/* Demo Credentials */}
               <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mt-4">
-                <p className="text-sm font-medium text-accent mb-2">Demo Credentials:</p>
-                <div className="text-xs text-muted-foreground space-y-1">
+                <p className="text-sm font-medium text-accent mb-2">📋 Demo Credentials (Click to Copy):</p>
+                <div className="text-xs text-muted-foreground space-y-2">
                   {selectedRole === "tourist" ? (
-                    <p>ID: 12345, Last 4 digits: 1234</p>
+                    <div className="space-y-1">
+                      <button 
+                        onClick={() => {setIdentifier('12345'); setPassword('1234');}} 
+                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
+                      >
+                        <strong className="text-accent">Blockchain ID:</strong> 12345<br />
+                        <strong className="text-accent">Last 4 digits:</strong> 1234
+                      </button>
+                    </div>
                   ) : selectedRole === "police" ? (
-                    <p>ID: police001, Password: demo123</p>
+                    <div className="space-y-1">
+                      <button 
+                        onClick={() => {setIdentifier('police001'); setPassword('demo123');}} 
+                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
+                      >
+                        <strong className="text-accent">ID:</strong> police001<br />
+                        <strong className="text-accent">Password:</strong> demo123
+                      </button>
+                    </div>
                   ) : selectedRole === "transport" ? (
-                    <p>ID: transport001, Password: demo123</p>
+                    <div className="space-y-1">
+                      <button 
+                        onClick={() => {setIdentifier('transport001'); setPassword('demo123');}} 
+                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
+                      >
+                        <strong className="text-accent">ID:</strong> transport001<br />
+                        <strong className="text-accent">Password:</strong> demo123
+                      </button>
+                    </div>
                   ) : (
-                    <p>ID: superadmin, Password: demo123</p>
+                    <div className="space-y-1">
+                      <button 
+                        onClick={() => {setIdentifier('superadmin'); setPassword('demo123');}} 
+                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
+                      >
+                        <strong className="text-accent">ID:</strong> superadmin<br />
+                        <strong className="text-accent">Password:</strong> demo123
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

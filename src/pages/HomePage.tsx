@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Shield, AlertTriangle, Map, Users, MessageCircle, Camera, Music, Palette, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
+import { Shield, AlertTriangle, Map, Users, MessageCircle, Camera, Music, Palette, Mail, Phone, MapPin, ExternalLink, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -386,14 +386,29 @@ const HomePage = () => {
               <div className="mt-4">
                 <h4 className="font-medium text-sm mb-2">Connect With Us</h4>
                 <div className="flex space-x-2">
-                  <Button size="sm" variant="outline" className="p-2">
-                    <ExternalLink className="h-4 w-4" />
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="p-2 hover:bg-blue-600 hover:text-white transition-colors" 
+                    onClick={() => window.open('https://linkedin.com/company/ne-tourist-safety', '_blank')}
+                  >
+                    <Linkedin className="h-4 w-4" />
                   </Button>
-                  <Button size="sm" variant="outline" className="p-2">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="p-2 hover:bg-gray-800 hover:text-white transition-colors"
+                    onClick={() => window.open('https://github.com/ne-tourist-safety', '_blank')}
+                  >
+                    <Github className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    className="p-2 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    onClick={() => window.open('mailto:safety@netourist.gov.in', '_blank')}
+                  >
                     <Mail className="h-4 w-4" />
-                  </Button>
-                  <Button size="sm" variant="outline" className="p-2">
-                    <Phone className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
