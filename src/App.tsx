@@ -7,6 +7,10 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AboutUs from "./pages/AboutUs";
+import EmergencySOS from "./pages/EmergencySOS";
+import ExploreCulture from "./pages/ExploreCulture";
 import TouristDashboard from "./pages/TouristDashboard";
 import PoliceDashboard from "./pages/PoliceDashboard";
 import TransportDashboard from "./pages/TransportDashboard";
@@ -25,6 +29,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/emergency-sos" element={<EmergencySOS />} />
+            <Route path="/explore-culture" element={<ExploreCulture />} />
             <Route 
               path="/dashboard" 
               element={

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Shield, AlertTriangle, Map, Users, MessageCircle, Camera, Music, Palette } from "lucide-react";
+import { Shield, AlertTriangle, Map, Users, MessageCircle, Camera, Music, Palette, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 import CulturalModal, { CULTURAL_DATA } from "@/components/CulturalModal";
 import heroImage from "@/assets/hero-northeast.jpg";
 import traditionalDance from "@/assets/traditional-dance.jpg";
@@ -10,6 +11,7 @@ import northeastNature from "@/assets/northeast-nature.jpg";
 import traditionalCrafts from "@/assets/traditional-crafts.jpg";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [chatOpen, setChatOpen] = useState(false);
   const [selectedCulturalItem, setSelectedCulturalItem] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -80,9 +82,9 @@ const HomePage = () => {
             </span>
           </div>
           <nav className="hidden md:flex space-x-6">
-            <a href="#features" className="text-foreground/70 hover:text-primary transition-colors">Features</a>
-            <a href="#culture" className="text-foreground/70 hover:text-primary transition-colors">Culture</a>
-            <a href="#dashboards" className="text-foreground/70 hover:text-primary transition-colors">Dashboards</a>
+            <a href="#features" className="text-foreground/70 hover:text-primary transition-colors scroll-smooth">Features</a>
+            <a href="#culture" className="text-foreground/70 hover:text-primary transition-colors scroll-smooth">Culture</a>
+            <a href="#dashboards" className="text-foreground/70 hover:text-primary transition-colors scroll-smooth">Dashboards</a>
           </nav>
           <Button variant="outline" asChild>
             <a href="/login">Login</a>
@@ -119,10 +121,10 @@ const HomePage = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button size="lg" className="btn-cultural text-lg px-8 py-4">
+            <Button size="lg" className="btn-cultural text-lg px-8 py-4" onClick={() => navigate("/emergency-sos")}>
               Emergency SOS
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-4" onClick={() => navigate("/explore-culture")}>
               Explore Culture
             </Button>
           </div>
@@ -274,15 +276,152 @@ const HomePage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-12">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Shield className="h-6 w-6 text-primary" />
-            <span className="text-lg font-semibold">NE Tourist Safety System</span>
+      <footer className="bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10 border-t border-border py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Company Info */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-8 w-8 text-primary" />
+                <span className="text-lg font-bold">NE Tourist Safety</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Smart Safety System
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Protecting travelers in North East India with cutting-edge technology while 
+                celebrating our rich cultural heritage and traditional wisdom.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                🧡 Made with love for North East India
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-foreground">Quick Links</h3>
+              <div className="space-y-2 text-sm">
+                <button onClick={() => navigate("/")} className="block text-muted-foreground hover:text-primary transition-colors">
+                  Home
+                </button>
+                <button onClick={() => navigate("/login")} className="block text-muted-foreground hover:text-primary transition-colors">
+                  Login
+                </button>
+                <button 
+                  onClick={() => {
+                    const element = document.getElementById('features');
+                    element?.scrollIntoView({ behavior: 'smooth' });
+                  }} 
+                  className="block text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Features
+                </button>
+                <button onClick={() => navigate("/explore-culture")} className="block text-muted-foreground hover:text-primary transition-colors">
+                  Cultural Heritage
+                </button>
+                <button onClick={() => navigate("/about")} className="block text-muted-foreground hover:text-primary transition-colors">
+                  Safety Guidelines
+                </button>
+                <button onClick={() => navigate("/emergency-sos")} className="block text-muted-foreground hover:text-primary transition-colors">
+                  Emergency Contacts
+                </button>
+              </div>
+            </div>
+
+            {/* Cultural Heritage */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-foreground">Cultural Heritage</h3>
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-1 text-sm">
+                    <MapPin className="h-4 w-4 text-primary" />
+                    <span className="font-medium text-foreground">Seven Sister States</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Assam, Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Tripura
+                  </p>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-1 text-sm">
+                    <Music className="h-4 w-4 text-accent" />
+                    <span className="font-medium text-foreground">Traditional Wisdom</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Integrating ancient knowledge with modern safety
+                  </p>
+                </div>
+                <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 mt-4">
+                  <p className="text-xs italic text-muted-foreground">
+                    "Preserving our cultural identity while embracing technological advancement for tourist safety"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Us */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-foreground">Contact Us</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span>Guwahati, Assam</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <span className="text-xs">North East India</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Phone className="h-4 w-4 text-destructive" />
+                  <span>Emergency: 112</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Phone className="h-4 w-4 text-primary" />
+                  <span>Tourist Helpline: 1363</span>
+                </div>
+                <div className="flex items-center space-x-2 text-muted-foreground">
+                  <Mail className="h-4 w-4 text-accent" />
+                  <span>safety@netourist.gov.in</span>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h4 className="font-medium text-sm mb-2">Connect With Us</h4>
+                <div className="flex space-x-2">
+                  <Button size="sm" variant="outline" className="p-2">
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                  <Button size="sm" variant="outline" className="p-2">
+                    <Mail className="h-4 w-4" />
+                  </Button>
+                  <Button size="sm" variant="outline" className="p-2">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-muted-foreground">
-            Protecting tourists while celebrating the rich cultural heritage of North East India
-          </p>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-border mt-12 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <p className="text-sm text-muted-foreground">
+                © 2025 North East Tourist Safety System. All rights reserved.
+              </p>
+              <div className="flex space-x-6 text-sm">
+                <button onClick={() => navigate("/about")} className="text-muted-foreground hover:text-primary transition-colors">
+                  Privacy Policy
+                </button>
+                <button onClick={() => navigate("/about")} className="text-muted-foreground hover:text-primary transition-colors">
+                  Terms of Service
+                </button>
+                <button onClick={() => navigate("/about")} className="text-muted-foreground hover:text-primary transition-colors">
+                  Accessibility
+                </button>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-4 text-center">
+              Developed with ❤️ for the beautiful North Eastern states of India
+            </p>
+          </div>
         </div>
       </footer>
 
