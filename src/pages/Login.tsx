@@ -74,18 +74,8 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background pattern-mountain flex items-center justify-center p-4">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="North East India" 
-          className="w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div 
@@ -97,60 +87,55 @@ const Login = () => {
               NE Tourist Safety
             </span>
           </div>
-          <p className="text-muted-foreground">Secure access to your safety dashboard</p>
         </div>
 
-        {!selectedRole ? (
-          <Card className="card-cultural border-0">
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl">Select Your Role</CardTitle>
-              <CardDescription>Choose your login type to access the appropriate dashboard</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-4">
-                {roleOptions.map((role) => (
-                  <Button
-                    key={role.id}
-                    variant="outline"
-                    className="h-24 flex flex-col items-center justify-center space-y-2 hover:bg-primary/10 hover:border-primary transition-all duration-200 cursor-pointer"
-                    onClick={() => {
-                      console.log(`Selected role: ${role.id}`);
-                      setSelectedRole(role.id);
-                    }}
-                  >
-                    <role.icon className="h-6 w-6" />
-                    <span className="text-sm font-medium">{role.label}</span>
-                    <span className="text-xs text-muted-foreground text-center">{role.description}</span>
-                  </Button>
-                ))}
-              </div>
-              
-              <div className="mt-6 text-center">
-                <Button variant="link" onClick={() => navigate("/")}>
-                  ← Back to Homepage
+        {/* Role Selection */}
+        <Card className="bg-white shadow-lg border-0 mb-6">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-xl font-semibold text-gray-800">Select Your Role</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {roleOptions.map((role) => (
+                <Button
+                  key={role.id}
+                  variant={selectedRole === role.id ? "default" : "outline"}
+                  className={`h-12 text-sm font-medium transition-all duration-200 ${
+                    selectedRole === role.id 
+                      ? "bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500" 
+                      : "bg-white border-gray-200 text-gray-600 hover:border-emerald-300 hover:text-emerald-600"
+                  }`}
+                  onClick={() => setSelectedRole(role.id)}
+                >
+                  {role.label}
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
-          <Card className="card-cultural border-0">
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Login Form */}
+        {selectedRole && (
+          <Card className="bg-white shadow-lg border-0">
             <CardHeader className="text-center pb-4">
               <div className="flex items-center justify-center space-x-2 mb-2">
-                <User className="h-6 w-6 text-primary" />
-                <span className="text-lg font-semibold text-primary">
+                <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
+                  <User className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-lg font-semibold text-gray-800">
                   {roleOptions.find(r => r.id === selectedRole)?.label} Login
                 </span>
               </div>
-              <CardDescription>
+              <p className="text-sm text-gray-500">
                 {roleOptions.find(r => r.id === selectedRole)?.description}
-              </CardDescription>
+              </p>
             </CardHeader>
             
             <CardContent>
-              <form onSubmit={handleLogin} className="space-y-6">
+              <form onSubmit={handleLogin} className="space-y-4">
                 {/* ID Field */}
                 <div className="space-y-2">
-                  <Label htmlFor="identifier">
+                  <Label htmlFor="identifier" className="text-sm font-medium text-gray-700">
                     {selectedRole === "tourist" ? "Blockchain ID" : "ID"}
                   </Label>
                   <Input
@@ -159,20 +144,15 @@ const Login = () => {
                     placeholder={selectedRole === "tourist" ? "Enter your blockchain id" : "Enter your ID"}
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    className={selectedRole === "tourist" ? "font-mono" : ""}
+                    className="h-12 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                     required
                   />
-                  {selectedRole === "tourist" && (
-                    <p className="text-xs text-muted-foreground">
-                      Your unique blockchain identifier for secure access
-                    </p>
-                  )}
                 </div>
 
                 {/* Password */}
                 <div className="space-y-2">
-                  <Label htmlFor="password">
-                    {selectedRole === "tourist" ? "Last 4 digits of Aadhar/Passport" : "Password"}
+                  <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                    {selectedRole === "tourist" ? "Last 4 digits of Aadhaar/Passport" : "Password"}
                   </Label>
                   <div className="relative">
                     <Input
@@ -181,7 +161,7 @@ const Login = () => {
                       placeholder={selectedRole === "tourist" ? "Enter last 4 digits" : "Enter your password"}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pr-10"
+                      className="h-12 border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 pr-10"
                       maxLength={selectedRole === "tourist" ? 4 : undefined}
                       required
                     />
@@ -193,15 +173,15 @@ const Login = () => {
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        <EyeOff className="h-4 w-4 text-gray-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-muted-foreground" />
+                        <Eye className="h-4 w-4 text-gray-400" />
                       )}
                     </Button>
                   </div>
                   {selectedRole === "tourist" && (
-                    <p className="text-xs text-muted-foreground">
-                      Enter the last 4 digits of your Aadhar card or Passport number
+                    <p className="text-xs text-gray-500">
+                      Enter the last 4 digits of your Aadhaar card or Passport number
                     </p>
                   )}
                 </div>
@@ -209,73 +189,32 @@ const Login = () => {
                 {/* Login Button */}
                 <Button 
                   type="submit" 
-                  className="w-full btn-cultural text-lg py-3"
+                  className="w-full h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-base"
                   disabled={!identifier || !password || isLoading}
                 >
                   {isLoading ? "Authenticating..." : "Access Dashboard"}
                 </Button>
-
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => setSelectedRole("")}
-                >
-                  ← Change Role
-                </Button>
               </form>
 
               {/* Demo Credentials */}
-              <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 mt-4">
-                <p className="text-sm font-medium text-accent mb-2">📋 Demo Credentials (Click to Copy):</p>
-                <div className="text-xs text-muted-foreground space-y-2">
-                  {selectedRole === "tourist" ? (
-                    <div className="space-y-1">
-                      <button 
-                        onClick={() => {setIdentifier('12345'); setPassword('1234');}} 
-                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
-                      >
-                        <strong className="text-accent">Blockchain ID:</strong> 12345<br />
-                        <strong className="text-accent">Last 4 digits:</strong> 1234
-                      </button>
-                    </div>
-                  ) : selectedRole === "police" ? (
-                    <div className="space-y-1">
-                      <button 
-                        onClick={() => {setIdentifier('police001'); setPassword('demo123');}} 
-                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
-                      >
-                        <strong className="text-accent">ID:</strong> police001<br />
-                        <strong className="text-accent">Password:</strong> demo123
-                      </button>
-                    </div>
-                  ) : selectedRole === "transport" ? (
-                    <div className="space-y-1">
-                      <button 
-                        onClick={() => {setIdentifier('transport001'); setPassword('demo123');}} 
-                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
-                      >
-                        <strong className="text-accent">ID:</strong> transport001<br />
-                        <strong className="text-accent">Password:</strong> demo123
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      <button 
-                        onClick={() => {setIdentifier('superadmin'); setPassword('demo123');}} 
-                        className="block w-full text-left p-2 rounded bg-accent/5 hover:bg-accent/10 transition-colors"
-                      >
-                        <strong className="text-accent">ID:</strong> superadmin<br />
-                        <strong className="text-accent">Password:</strong> demo123
-                      </button>
-                    </div>
-                  )}
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mt-6">
+                <p className="text-sm font-medium text-gray-700 mb-3">Demo Credentials:</p>
+                <div className="text-xs text-gray-600 space-y-1">
+                  <div><strong>Tourist:</strong> ID: tourist123, Last 4 digits: 1234</div>
+                  <div><strong>Police:</strong> ID: police001, Password: demo123</div>
+                  <div><strong>Transport:</strong> ID: transport001, Password: demo123</div>
+                  <div><strong>Super Admin:</strong> ID: superadmin, Password: demo123</div>
                 </div>
               </div>
 
               <div className="mt-6 text-center">
-                <Button variant="link" onClick={() => navigate("/")}>
-                  ← Back to Homepage
+                <Button 
+                  type="button"
+                  variant="link" 
+                  className="text-emerald-600 hover:text-emerald-700"
+                  onClick={() => setSelectedRole("")}
+                >
+                  ← Change Role
                 </Button>
               </div>
             </CardContent>
@@ -284,8 +223,12 @@ const Login = () => {
 
         {/* Register Option */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground mb-2">Don't have an account?</p>
-          <Button variant="link" onClick={() => navigate("/register")}>
+          <p className="text-sm text-gray-500 mb-2">Don't have an account?</p>
+          <Button 
+            variant="link" 
+            className="text-emerald-600 hover:text-emerald-700"
+            onClick={() => navigate("/register")}
+          >
             Register Now
           </Button>
         </div>
