@@ -104,20 +104,31 @@ const Login = () => {
           <Card className="card-cultural border-0">
             <CardHeader className="text-center pb-4">
               <CardTitle className="text-2xl">Select Your Role</CardTitle>
+              <CardDescription>Choose your login type to access the appropriate dashboard</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 {roleOptions.map((role) => (
                   <Button
                     key={role.id}
-                    variant={selectedRole === role.id ? "default" : "outline"}
-                    className="h-20 flex flex-col items-center justify-center space-y-2"
-                    onClick={() => setSelectedRole(role.id)}
+                    variant="outline"
+                    className="h-24 flex flex-col items-center justify-center space-y-2 hover:bg-primary/10 hover:border-primary transition-all duration-200 cursor-pointer"
+                    onClick={() => {
+                      console.log(`Selected role: ${role.id}`);
+                      setSelectedRole(role.id);
+                    }}
                   >
                     <role.icon className="h-6 w-6" />
-                    <span className="text-sm">{role.label}</span>
+                    <span className="text-sm font-medium">{role.label}</span>
+                    <span className="text-xs text-muted-foreground text-center">{role.description}</span>
                   </Button>
                 ))}
+              </div>
+              
+              <div className="mt-6 text-center">
+                <Button variant="link" onClick={() => navigate("/")}>
+                  ← Back to Homepage
+                </Button>
               </div>
             </CardContent>
           </Card>
