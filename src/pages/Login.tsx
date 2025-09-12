@@ -88,7 +88,10 @@ const Login = () => {
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4">
+          <div 
+            className="flex items-center justify-center space-x-2 mb-4 cursor-pointer hover:scale-105 transition-transform"
+            onClick={() => navigate("/")}
+          >
             <Shield className="h-10 w-10 text-primary" />
             <span className="text-2xl font-bold bg-gradient-cultural bg-clip-text text-transparent">
               NE Tourist Safety
